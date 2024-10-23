@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Curency_Converter_Static"
+        xmlns:local="clr-namespace:Curency_Converter_Static" xmlns:fa="http://schemas.fontawesome.io/icons/"
         mc:Ignorable="d"
         Title="Curency Convereter" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterOwner">
     <Grid>
@@ -30,5 +30,63 @@
                 </Rectangle.Fill>
             </Rectangle>
         </Border>
+        <StackPanel Grid.Row="0" Width="1000" Height="50" Orientation="Horizontal">
+            <Label Content="Curency Converter" Width="1000" HorizontalContentAlignment="Center" 
+                   VerticalContentAlignment="Center" FontSize="25" Foreground="#ec2075" />
+        </StackPanel>
+        <StackPanel Grid.Row="1" Width="1000" Height="80" Orientation="Vertical" 
+                    HorizontalAlignment="Center">
+            <Label Content="Converted Curency" Width="1000" Height="40" 
+                   HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
+                   FontSize="20" Foreground="#ec2075" />
+            <Label  Name="lblCurency"  Width="1000" Height="40" 
+                   HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
+                   FontSize="20" Foreground="#ec2075" />
+        </StackPanel>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center"
+                    VerticalAlignment="Top" Height="60" Width="800">
+            <Label Height="40" Width="150" Content="Enter Amount : " Margin="35 0 0 0"
+                   VerticalAlignment="Bottom" Foreground="White" FontSize="20"/>
+            <Label Height="40" Width="150" Content="From : " Margin="110 0 0 0"
+                   VerticalAlignment="Bottom" Foreground="White" FontSize="20"/>
+            <Label Height="40" Width="150" Content="To : " Margin="130 0 0 0"
+                   VerticalAlignment="Bottom" Foreground="White" FontSize="20"/>
+        </StackPanel>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center"
+                    Height="90" Width="800" VerticalAlignment="Bottom">
+            <TextBox x:Name="txtCurency" Width="200" Height="30" Margin="40 0 0 0"
+                     PreviewTextInput="NumberValidationTextBox" FontSize="18"
+                     VerticalContentAlignment="Center" VerticalAlignment="Top"/>
+            <ComboBox x:Name="cmbFromCurency" Width="170" Height="30" Margin="60 0 40 0"
+                    MaxDropDownHeight="150" FontSize="18"
+                    VerticalContentAlignment="Center" VerticalAlignment="Top"/>
+            <fa:ImageAwesome Icon="Exchange" Height="30" Width="30" Foreground="White"
+                             VerticalAlignment="Top" />
+            <ComboBox x:Name="cmbToCurency" Width="170" Height="30" Margin="40 0 0 0"
+                      MaxDropDownHeight="150" FontSize="18"
+                      VerticalContentAlignment="Center" VerticalAlignment="Top"/>
+        </StackPanel>
+        <StackPanel Grid.Row="3" Height="100" Width="1000" Orientation="Horizontal">
+            <Button Name="Convert" Height="40" Width="150" Content="Convert" Click="Convert_Click"
+                    Margin="350 0 20 2" Foreground="White" FontSize="20"
+                    Style="{StaticResource ButtonRound}">
+                <Button.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                        <GradientStop Color="#ec2075" Offset="0.0" />
+                        <GradientStop Color="#f33944" Offset="0.50" />
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
+            <Button Name="Clear" Height="40" Width="150" Content="Clear" Click="Clear_Click"
+         Foreground="White" FontSize="20"
+        Style="{StaticResource ButtonRound}">
+                <Button.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                        <GradientStop Color="#ec2075" Offset="0.0" />
+                        <GradientStop Color="#f33944" Offset="0.50" />
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
+        </StackPanel>
     </Grid>
 </Window>
