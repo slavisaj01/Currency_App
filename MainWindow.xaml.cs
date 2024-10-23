@@ -30,9 +30,9 @@ namespace Curency_Converter_Static
             dtCurency.Columns.Add("Text");
             dtCurency.Columns.Add("Value");
             dtCurency.Rows.Add("--SELECT--", "");
-            dtCurency.Rows.Add("DIN", 1);
+            dtCurency.Rows.Add("EUR", 1);
             dtCurency.Rows.Add("USD", 75);
-            dtCurency.Rows.Add("EUR", 85);
+            dtCurency.Rows.Add("DIN", 117);
             dtCurency.Rows.Add("SAR", 20);
             dtCurency.Rows.Add("POUND", 5);
             dtCurency.Rows.Add("DEM", 43);
@@ -85,7 +85,9 @@ namespace Curency_Converter_Static
         }
         private void Clear_Click(object sender, RoutedEventArgs e)
         {
+            lblCurency.Content=string.Empty;
             lblCurency.Content = "";
+            txtCurency.Text = "";
             cmbFromCurency.SelectedIndex = 0;
             cmbToCurency.SelectedIndex = 0;
         }

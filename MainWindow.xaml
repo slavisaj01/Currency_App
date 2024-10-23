@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Curency_Converter_Static" xmlns:fa="http://schemas.fontawesome.io/icons/"
         mc:Ignorable="d"
+        ResizeMode="NoResize"
         Title="Curency Convereter" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterOwner">
     <Grid>
         <Grid.RowDefinitions>
