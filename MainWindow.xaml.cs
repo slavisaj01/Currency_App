@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography.X509Certificates;
+﻿using System.Data;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows;
@@ -21,7 +22,31 @@ namespace Curency_Converter_Static
         public MainWindow()
         {
             InitializeComponent();
-            
+            BindCurency();
+        }
+        private void BindCurency()
+        {
+            DataTable dtCurency = new DataTable();
+            dtCurency.Columns.Add("Text");
+            dtCurency.Columns.Add("Value");
+            dtCurency.Rows.Add("--SELECT--",0);
+            dtCurency.Rows.Add("DIN", 1);
+            dtCurency.Rows.Add("USD", 75);
+            dtCurency.Rows.Add("EUR", 85);
+            dtCurency.Rows.Add("SAR", 20);
+            dtCurency.Rows.Add("POUND", 5);
+            dtCurency.Rows.Add("DEM", 43);
+
+            cmbFromCurency.ItemsSource=dtCurency.DefaultView;
+            cmbFromCurency.DisplayMemberPath = "Text";
+            cmbFromCurency.SelectedItem = "Value";
+            cmbFromCurency.SelectedIndex = 0;
+
+            cmbToCurency.ItemsSource = dtCurency.DefaultView;
+            cmbToCurency.DisplayMemberPath = "Text";
+            cmbToCurency.SelectedItem = "Value";
+            cmbToCurency.SelectedIndex = 0;
+
         }
         private void Convert_Click(object sender, RoutedEventArgs e)
         {
@@ -30,6 +55,8 @@ namespace Curency_Converter_Static
         private void Clear_Click(object sender, RoutedEventArgs e)
         {
             lblCurency.Content = "";
+            cmbFromCurency.SelectedIndex = 0;
+            cmbToCurency.SelectedIndex = 0;
         }
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
