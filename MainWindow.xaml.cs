@@ -29,7 +29,7 @@ namespace Curency_Converter_Static
             DataTable dtCurency = new DataTable();
             dtCurency.Columns.Add("Text");
             dtCurency.Columns.Add("Value");
-            dtCurency.Rows.Add("--SELECT--",0);
+            dtCurency.Rows.Add("--SELECT--", "");
             dtCurency.Rows.Add("DIN", 1);
             dtCurency.Rows.Add("USD", 75);
             dtCurency.Rows.Add("EUR", 85);
@@ -37,20 +37,51 @@ namespace Curency_Converter_Static
             dtCurency.Rows.Add("POUND", 5);
             dtCurency.Rows.Add("DEM", 43);
 
-            cmbFromCurency.ItemsSource=dtCurency.DefaultView;
+            cmbFromCurency.ItemsSource = dtCurency.DefaultView;
             cmbFromCurency.DisplayMemberPath = "Text";
-            cmbFromCurency.SelectedItem = "Value";
+            cmbFromCurency.SelectedValuePath = "Value";
             cmbFromCurency.SelectedIndex = 0;
 
             cmbToCurency.ItemsSource = dtCurency.DefaultView;
             cmbToCurency.DisplayMemberPath = "Text";
-            cmbToCurency.SelectedItem = "Value";
+            cmbToCurency.SelectedValuePath = "Value";
             cmbToCurency.SelectedIndex = 0;
 
         }
         private void Convert_Click(object sender, RoutedEventArgs e)
         {
-            lblCurency.Content = "proba";
+            double ConvertedValue;
+
+            if (txtCurency.Text.Trim() == "" || txtCurency.Text == null)
+            {
+                MessageBox.Show("Please Enter Curency", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                txtCurency.Focus();
+                return;
+            }
+            else if (cmbFromCurency.SelectedValue == null || txtCurency.Text == null)
+            {
+                MessageBox.Show("Please Select Curency From", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                cmbFromCurency.Focus();
+                return;
+            }
+            else if (cmbToCurency.SelectedValue == null || txtCurency.Text == null)
+            {
+                MessageBox.Show("Please Select Curency To", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                cmbToCurency.Focus();
+                return;
+            }
+            if (cmbFromCurency.Text == cmbToCurency.Text)
+            {
+                ConvertedValue = double.Parse(txtCurency.Text);
+                lblCurency.Content = cmbToCurency.Text + " " + ConvertedValue.ToString("N3");// 3 nule u decimali
+            }
+            else
+            {
+                ConvertedValue = (double.Parse(cmbFromCurency.SelectedValue.ToString())*
+                    double.Parse(txtCurency.Text))/double.Parse(cmbToCurency.SelectedValue.ToString());
+                lblCurency.Content = cmbToCurency.Text + " " + ConvertedValue.ToString("N3");
+            }
+
         }
         private void Clear_Click(object sender, RoutedEventArgs e)
         {
