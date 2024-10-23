@@ -32,7 +32,7 @@
         </Border>
         <StackPanel Grid.Row="0" Width="1000" Height="50" Orientation="Horizontal">
             <Label Content="Curency Converter" Width="1000" HorizontalContentAlignment="Center" 
-                   VerticalContentAlignment="Center" FontSize="25" Foreground="#ec2075" />
+                   VerticalContentAlignment="Center" FontSize="25" Foreground="#ec2075" FontWeight="Bold" />
         </StackPanel>
         <StackPanel Grid.Row="1" Width="1000" Height="80" Orientation="Vertical" 
                     HorizontalAlignment="Center">
@@ -41,7 +41,7 @@
                    FontSize="20" Foreground="Black" />
             <Label  Name="lblCurency"  Width="1000" Height="40" 
                    HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
-                   FontSize="20" Foreground="#ec2075" />
+                   FontSize="20" Foreground="Black" />
         </StackPanel>
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center"
                     VerticalAlignment="Top" Height="60" Width="800">
@@ -60,8 +60,8 @@
             <ComboBox x:Name="cmbFromCurency" Width="170" Height="30" Margin="60 0 40 0"
                     MaxDropDownHeight="150" FontSize="18"
                     VerticalContentAlignment="Center" VerticalAlignment="Top"/>
-            <fa:ImageAwesome Icon="Exchange" Height="30" Width="30" Foreground="White"
-                             VerticalAlignment="Top" />
+            <fa:ImageAwesome Icon="Exchange" Height="30" Width="30" 
+                             Foreground="White" VerticalAlignment="Top" />
             <ComboBox x:Name="cmbToCurency" Width="170" Height="30" Margin="40 0 0 0"
                       MaxDropDownHeight="150" FontSize="18"
                       VerticalContentAlignment="Center" VerticalAlignment="Top"/>
@@ -87,6 +87,11 @@
                     </LinearGradientBrush>
                 </Button.Background>
             </Button>
+        </StackPanel>
+        <StackPanel Grid.Row="4" Height="150" Width="800" HorizontalAlignment="Center"
+                    VerticalAlignment="Center" Orientation="Horizontal">
+            <Image Height="150" Width="150" Source="/Images/menjacnica.jpg" 
+                   VerticalAlignment="Center" HorizontalAlignment="Center" Margin="325 0" />
         </StackPanel>
     </Grid>
 </Window>
