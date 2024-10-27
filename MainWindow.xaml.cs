@@ -96,5 +96,9 @@ namespace Curency_Converter_Static
             Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
         }
+        public void Proba()
+        {
+
+        }
     }
 }
