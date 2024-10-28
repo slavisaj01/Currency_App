@@ -5,11 +5,15 @@
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <Style x:Key="ButtonRound" TargetType="Button">
+
+            <Setter Property="Background" Value="AliceBlue"></Setter>
+
+            <Setter Property="Foreground" Value="White"></Setter>
+
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border CornerRadius="5" Background="{TemplateBinding Background}"
-                                BorderThickness="4" >
+                        <Border CornerRadius="5" Background="{TemplateBinding Background}" BorderThickness="0.5">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"></ContentPresenter>
                         </Border>
                     </ControlTemplate>

@@ -157,5 +157,40 @@ namespace CurrencyConverter_Static
             e.Handled = regex.IsMatch(e.Text);
         }
         #endregion
+
+        private void cmbFromCurrency_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+
+        }
+
+        private void cmbFromCurrency_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void cmbToCurrency_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+
+        }
+
+        private void cmbToCurrency_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void btnSave_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnCancel_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void dgvCurrency_SelectedCellsChanged(object sender, System.Windows.Controls.SelectedCellsChangedEventArgs e)
+        {
+
+        }
     }
 }

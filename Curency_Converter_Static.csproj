@@ -11,6 +11,7 @@
   <ItemGroup>
     <None Remove="Images\Exchange.jpg" />
     <None Remove="Images\menjacnica.jpg" />
+    <None Remove="Images\money.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -19,6 +20,7 @@
 
   <ItemGroup>
     <Resource Include="Images\menjacnica.jpg" />
+    <Resource Include="Images\money.png" />
   </ItemGroup>
 
 </Project>
