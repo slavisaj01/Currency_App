@@ -1,104 +1,161 @@
-﻿using System.Data;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
+﻿using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
-namespace Curency_Converter_Static
+//This library is used for Regular Expression
+using System.Text.RegularExpressions;
+
+//This library is used for DataTable
+using System.Data;
+
+namespace CurrencyConverter_Static
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         public MainWindow()
         {
             InitializeComponent();
-            BindCurency();
+
+            //ClearControls method is used to clear all control values
+            ClearControls();
+
+            //BindCurrency is used to bind currency name with the value in the Combobox
+            BindCurrency();
         }
-        private void BindCurency()
+
+        #region Bind Currency From and To Combobox
+        private void BindCurrency()
+
         {
-            DataTable dtCurency = new DataTable();
-            dtCurency.Columns.Add("Text");
-            dtCurency.Columns.Add("Value");
-            dtCurency.Rows.Add("--SELECT--", "");
-            dtCurency.Rows.Add("EUR", 1);
-            dtCurency.Rows.Add("USD", 75);
-            dtCurency.Rows.Add("DIN", 117);
-            dtCurency.Rows.Add("SAR", 20);
-            dtCurency.Rows.Add("POUND", 5);
-            dtCurency.Rows.Add("DEM", 43);
+            //Create a Datatable Object
+            DataTable dtCurrency = new DataTable();
 
-            cmbFromCurency.ItemsSource = dtCurency.DefaultView;
-            cmbFromCurency.DisplayMemberPath = "Text";
-            cmbFromCurency.SelectedValuePath = "Value";
-            cmbFromCurency.SelectedIndex = 0;
+            //Add the text column in the DataTable
+            dtCurrency.Columns.Add("Text");
 
-            cmbToCurency.ItemsSource = dtCurency.DefaultView;
-            cmbToCurency.DisplayMemberPath = "Text";
-            cmbToCurency.SelectedValuePath = "Value";
-            cmbToCurency.SelectedIndex = 0;
+            //Add the value column in the DataTable
+            dtCurrency.Columns.Add("Value");
 
+            //Add rows in the Datatable with text and value
+            dtCurrency.Rows.Add("--SELECT--", 0);
+            dtCurrency.Rows.Add("INR", 1);
+            dtCurrency.Rows.Add("USD", 75);
+            dtCurrency.Rows.Add("EUR", 85);
+            dtCurrency.Rows.Add("SAR", 20);
+            dtCurrency.Rows.Add("POUND", 5);
+            dtCurrency.Rows.Add("DEM", 43);
+
+            //Datatable data assigned from the currency combobox
+            cmbFromCurrency.ItemsSource = dtCurrency.DefaultView;
+
+            //DisplayMemberPath property is used to display data in the combobox
+            cmbFromCurrency.DisplayMemberPath = "Text";
+
+            //SelectedValuePath property is used to set the value in the combobox
+            cmbFromCurrency.SelectedValuePath = "Value";
+
+            //SelectedIndex property is used to bind the combobox to its default selected item 
+            cmbFromCurrency.SelectedIndex = 0;
+
+            //All properties are set to To Currency combobox as it is in the From Currency combobox
+            cmbToCurrency.ItemsSource = dtCurrency.DefaultView;
+            cmbToCurrency.DisplayMemberPath = "Text";
+            cmbToCurrency.SelectedValuePath = "Value";
+            cmbToCurrency.SelectedIndex = 0;
         }
+        #endregion
+
+        #region Button Click Event
+
+        //Convert the button click event
         private void Convert_Click(object sender, RoutedEventArgs e)
         {
+            //Create the variable as ConvertedValue with double datatype to store currency converted value
             double ConvertedValue;
 
-            if (txtCurency.Text.Trim() == "" || txtCurency.Text == null)
+            //Check if the amount textbox is Null or Blank
+            if (txtCurrency.Text == null || txtCurrency.Text.Trim() == "")
             {
-                MessageBox.Show("Please Enter Curency", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-                txtCurency.Focus();
+                //If amount textbox is Null or Blank it will show this message box
+                MessageBox.Show("Please Enter Currency", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                //After clicking on messagebox OK set focus on amount textbox
+                txtCurrency.Focus();
                 return;
             }
-            else if (cmbFromCurency.SelectedValue == null || txtCurency.Text == null)
+            //Else if currency From is not selected or select default text --SELECT--
+            else if (cmbFromCurrency.SelectedValue == null || cmbFromCurrency.SelectedIndex == 0)
             {
-                MessageBox.Show("Please Select Curency From", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-                cmbFromCurency.Focus();
+                //Show the message
+                MessageBox.Show("Please Select Currency From", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                //Set focus on the From Combobox
+                cmbFromCurrency.Focus();
                 return;
             }
-            else if (cmbToCurency.SelectedValue == null || txtCurency.Text == null)
+            //Else if currency To is not selected or select default text --SELECT--
+            else if (cmbToCurrency.SelectedValue == null || cmbToCurrency.SelectedIndex == 0)
             {
-                MessageBox.Show("Please Select Curency To", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-                cmbToCurency.Focus();
+                //Show the message
+                MessageBox.Show("Please Select Currency To", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                //Set focus on the To Combobox
+                cmbToCurrency.Focus();
                 return;
             }
-            if (cmbFromCurency.Text == cmbToCurency.Text)
+
+            //Check if From and To Combobox selected values are same
+            if (cmbFromCurrency.Text == cmbToCurrency.Text)
             {
-                ConvertedValue = double.Parse(txtCurency.Text);
-                lblCurency.Content = cmbToCurency.Text + " " + ConvertedValue.ToString("N3");// 3 nule u decimali
+                //Amount textbox value set in ConvertedValue.
+                //double.parse is used for converting the datatype String To Double.
+                //Textbox text have string and ConvertedValue is double Datatype
+                ConvertedValue = double.Parse(txtCurrency.Text);
+
+                //Show the label converted currency and converted currency name and ToString("N3") is used to place 000 after the dot(.)
+                lblCurrency.Content = cmbToCurrency.Text + " " + ConvertedValue.ToString("N3");
             }
             else
             {
-                ConvertedValue = (double.Parse(cmbFromCurency.SelectedValue.ToString())*
-                    double.Parse(txtCurency.Text))/double.Parse(cmbToCurency.SelectedValue.ToString());
-                lblCurency.Content = cmbToCurency.Text + " " + ConvertedValue.ToString("N3");
-            }
+                //Calculation for currency converter is From Currency value multiply(*) 
+                //With the amount textbox value and then that total divided(/) with To Currency value
+                ConvertedValue = (double.Parse(cmbFromCurrency.SelectedValue.ToString()) *
+                    double.Parse(txtCurrency.Text)) /
+                    double.Parse(cmbToCurrency.SelectedValue.ToString());
 
+                //Show the label converted currency and converted currency name.
+                lblCurrency.Content = cmbToCurrency.Text + " " + ConvertedValue.ToString("N3");
+            }
         }
+
+        //Clear Button click event
         private void Clear_Click(object sender, RoutedEventArgs e)
         {
-            lblCurency.Content=string.Empty;
-            lblCurency.Content = "";
-            txtCurency.Text = "";
-            cmbFromCurency.SelectedIndex = 0;
-            cmbToCurency.SelectedIndex = 0;
+            //ClearControls method is used to clear all controls value
+            ClearControls();
         }
-        private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
+        #endregion
+
+        #region Extra Events
+
+        //ClearControls method is used to clear all controls value
+        private void ClearControls()
         {
+            txtCurrency.Text = string.Empty;
+            if (cmbFromCurrency.Items.Count > 0)
+                cmbFromCurrency.SelectedIndex = 0;
+            if (cmbToCurrency.Items.Count > 0)
+                cmbToCurrency.SelectedIndex = 0;
+            lblCurrency.Content = "";
+            txtCurrency.Focus();
+        }
+
+        private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
+        //Allow Only Integer in Text Box
+        {
+            //Regular Expression is used to add regex.
+            // Add Library using System.Text.RegularExpressions;
             Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
         }
-        public void Proba()
-        {
-
-        }
+        #endregion
     }
 }
