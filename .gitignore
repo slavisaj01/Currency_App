@@ -1,4 +1,4 @@
-﻿# Visual Studio
+﻿﻿# Visual Studio
 .vs/
 *.user
 *.suo
@@ -8,3 +8,5 @@
 # Build results
 [Bb]in/
 [Oo]bj/
+DataBase/CurencyConverter.mdf
+DataBase/CurencyConverter_log.ldf

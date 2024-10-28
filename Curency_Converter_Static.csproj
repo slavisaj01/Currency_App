@@ -9,18 +9,25 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\delete.png" />
     <None Remove="Images\Exchange.jpg" />
     <None Remove="Images\menjacnica.jpg" />
     <None Remove="Images\money.png" />
+    <None Remove="Images\pen.png" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="FontAwesome.WPF" Version="4.7.0.9" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Images\delete.png" />
     <Resource Include="Images\menjacnica.jpg" />
     <Resource Include="Images\money.png" />
+    <Resource Include="Images\pen.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
 </Project>
