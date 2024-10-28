@@ -6,6 +6,7 @@ using System.Data;
 //This library is used for Regular Expression
 using System.Text.RegularExpressions;
 using System.Configuration;
+using System.Windows.Controls;
 
 //This library is used for DataTable
 
@@ -35,9 +36,11 @@ namespace CurrencyConverter_Static
 
             //BindCurrency is used to bind currency name with the value in the Combobox
             BindCurrency();
+
+            GetData();
         }
 
-        public void myCon()
+        public void mycon()
         {
             string Conn = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
             con = new SqlConnection(Conn);
@@ -49,7 +52,7 @@ namespace CurrencyConverter_Static
         private void BindCurrency()
 
         {
-            myCon();
+            mycon();
 
             DataTable dt = new DataTable();
 
@@ -71,7 +74,7 @@ namespace CurrencyConverter_Static
 
             if (dt.Rows.Count > 0 && dt != null)
             {
-                //Datatable data assigned from the currency combobox
+                //Datatable     data assigned from the currency combobox
                 cmbFromCurrency.ItemsSource = dt.DefaultView;
 
                 //All properties are set to To Currency combobox as it is in the From Currency combobox
@@ -234,7 +237,7 @@ namespace CurrencyConverter_Static
                         //Show the confirmation message
                         if (MessageBox.Show("Are you sure you want to update ?", "Information", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                         {
-                            myCon();
+                            mycon();
                             DataTable dt = new DataTable();
 
                             //Update Query Record update using Id
@@ -254,7 +257,7 @@ namespace CurrencyConverter_Static
                     {
                         if (MessageBox.Show("Are you sure you want to save ?", "Information", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                         {
-                            myCon();
+                            mycon();
                             //Insert query to Save data in the table
                             cmd = new SqlCommand("INSERT INTO Currency_Master(Amount, CurrencyName) VALUES(@Amount, @CurrencyName)", con);
                             cmd.CommandType = CommandType.Text;
@@ -296,7 +299,7 @@ namespace CurrencyConverter_Static
         private void GetData()
         {
             //Method is used for connect with database and open database connection
-            myCon();
+            mycon();
 
             //Create Datatable object
             DataTable dt = new DataTable();
@@ -327,12 +330,79 @@ namespace CurrencyConverter_Static
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                ClearMaster();
 
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
-        private void dgvCurrency_SelectedCellsChanged(object sender, System.Windows.Controls.SelectedCellsChangedEventArgs e)
+        private void dgvCurrency_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
         {
+            try
+            {
+                //Create object for DataGrid
+                DataGrid grd = (DataGrid)sender;
 
+                //Create an object for DataRowView
+                DataRowView row_selected = grd.CurrentItem as DataRowView;
+
+                //If row_selected is not null
+                if (row_selected != null)
+                {
+                    //dgvCurrency items count greater than zero
+                    if (dgvCurrency.Items.Count > 0)
+                    {
+                        if (grd.SelectedCells.Count > 0)
+                        {
+                            //Get selected row id column value and set it to the CurrencyId variable
+                            CurrencyId = Int32.Parse(row_selected["Id"].ToString());
+
+                            //DisplayIndex is equal to zero in the Edited cell
+                            if (grd.SelectedCells[0].Column.DisplayIndex == 0)
+                            {
+                                //Get selected row amount column value and set to amount textbox
+                                txtAmount.Text = row_selected["Amount"].ToString();
+
+                                //Get selected row CurrencyName column value and set it to CurrencyName textbox
+                                txtCurrencyName.Text = row_selected["CurrencyName"].ToString();
+                                btnSave.Content = "Update";     //Change save button text Save to Update
+                            }
+
+                            //DisplayIndex is equal to one in the deleted cell
+                            if (grd.SelectedCells[0].Column.DisplayIndex == 1)
+                            {
+                                //Show confirmation dialog box
+                                if (MessageBox.Show("Are you sure you want to delete ?", "Information", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                                {
+                                    mycon();
+                                    DataTable dt = new DataTable();
+
+                                    //Execute delete query to delete record from table using Id
+                                    cmd = new SqlCommand("DELETE FROM Currency_Master WHERE Id = @Id", con);
+                                    cmd.CommandType = CommandType.Text;
+
+                                    //CurrencyId set in @Id parameter and send it in delete statement
+                                    cmd.Parameters.AddWithValue("@Id", CurrencyId);
+                                    cmd.ExecuteNonQuery();
+                                    con.Close();
+
+                                    MessageBox.Show("Data deleted successfully", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                                    ClearMaster();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }
