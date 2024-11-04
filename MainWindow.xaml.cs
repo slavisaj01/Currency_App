@@ -3,12 +3,10 @@ using System.Windows.Input;
 using System.Data.SqlClient;
 using System.Data;
 
-//This library is used for Regular Expression
 using System.Text.RegularExpressions;
 using System.Configuration;
 using System.Windows.Controls;
 
-//This library is used for DataTable
 
 
 
@@ -31,10 +29,8 @@ namespace CurrencyConverter_Static
         {
             InitializeComponent();
 
-            //ClearControls method is used to clear all control values
             ClearControls();
 
-            //BindCurrency is used to bind currency name with the value in the Combobox
             BindCurrency();
 
             GetData();
@@ -74,22 +70,17 @@ namespace CurrencyConverter_Static
 
             if (dt.Rows.Count > 0 && dt != null)
             {
-                //Datatable     data assigned from the currency combobox
                 cmbFromCurrency.ItemsSource = dt.DefaultView;
 
-                //All properties are set to To Currency combobox as it is in the From Currency combobox
                 cmbToCurrency.ItemsSource = dt.DefaultView;
             }
             con.Close();
 
 
-            //DisplayMemberPath property is used to display data in the combobox
             cmbFromCurrency.DisplayMemberPath = "CurrencyName";
 
-            //SelectedValuePath property is used to set the value in the combobox
             cmbFromCurrency.SelectedValuePath = "Id";
 
-            //SelectedIndex property is used to bind the combobox to its default selected item 
             cmbFromCurrency.SelectedIndex = 0;
 
 
@@ -101,77 +92,55 @@ namespace CurrencyConverter_Static
 
         #region Button Click Event
 
-        //Convert the button click event
         private void Convert_Click(object sender, RoutedEventArgs e)
         {
-            //Create the variable as ConvertedValue with double datatype to store currency converted value
             double ConvertedValue;
 
-            //Check if the amount textbox is Null or Blank
             if (txtCurrency.Text == null || txtCurrency.Text.Trim() == "")
             {
-                //If amount textbox is Null or Blank it will show this message box
                 MessageBox.Show("Please Enter Currency", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-                //After clicking on messagebox OK set focus on amount textbox
                 txtCurrency.Focus();
                 return;
             }
-            //Else if currency From is not selected or select default text --SELECT--
             else if (cmbFromCurrency.SelectedValue == null || cmbFromCurrency.SelectedIndex == 0)
             {
-                //Show the message
                 MessageBox.Show("Please Select Currency From", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
 
-                //Set focus on the From Combobox
                 cmbFromCurrency.Focus();
                 return;
             }
-            //Else if currency To is not selected or select default text --SELECT--
             else if (cmbToCurrency.SelectedValue == null || cmbToCurrency.SelectedIndex == 0)
             {
-                //Show the message
                 MessageBox.Show("Please Select Currency To", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
 
-                //Set focus on the To Combobox
                 cmbToCurrency.Focus();
                 return;
             }
 
-            //Check if From and To Combobox selected values are same
             if (cmbFromCurrency.Text == cmbToCurrency.Text)
             {
-                //Amount textbox value set in ConvertedValue.
-                //double.parse is used for converting the datatype String To Double.
-                //Textbox text have string and ConvertedValue is double Datatype
                 ConvertedValue = double.Parse(txtCurrency.Text);
 
-                //Show the label converted currency and converted currency name and ToString("N3") is used to place 000 after the dot(.)
                 lblCurrency.Content = cmbToCurrency.Text + " " + ConvertedValue.ToString("N3");
             }
             else
             {
-                //Calculation for currency converter is From Currency value multiply(*) 
-                //With the amount textbox value and then that total divided(/) with To Currency value
                 ConvertedValue = (double.Parse(cmbFromCurrency.SelectedValue.ToString()) *
-                    double.Parse(txtCurrency.Text)) /
-                    double.Parse(cmbToCurrency.SelectedValue.ToString());
+double.Parse(txtCurrency.Text)) /
+double.Parse(cmbToCurrency.SelectedValue.ToString());
 
-                //Show the label converted currency and converted currency name.
                 lblCurrency.Content = cmbToCurrency.Text + " " + ConvertedValue.ToString("N3");
             }
         }
 
-        //Clear Button click event
         private void Clear_Click(object sender, RoutedEventArgs e)
         {
-            //ClearControls method is used to clear all controls value
             ClearControls();
         }
         #endregion
 
         #region Extra Events
 
-        //ClearControls method is used to clear all controls value
         private void ClearControls()
         {
             txtCurrency.Text = string.Empty;
@@ -184,10 +153,7 @@ namespace CurrencyConverter_Static
         }
 
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
-        //Allow Only Integer in Text Box
         {
-            //Regular Expression is used to add regex.
-            // Add Library using System.Text.RegularExpressions;
             Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
         }
@@ -230,17 +196,14 @@ namespace CurrencyConverter_Static
                     return;
                 }
                 else
-                {   //Edit time and set that record Id in CurrencyId variable.
-                    //Code to Update. If CurrencyId greater than zero than it is go for update.
+                {
                     if (CurrencyId > 0)
                     {
-                        //Show the confirmation message
                         if (MessageBox.Show("Are you sure you want to update ?", "Information", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                         {
                             mycon();
                             DataTable dt = new DataTable();
 
-                            //Update Query Record update using Id
                             cmd = new SqlCommand("UPDATE Currency_Master SET Amount = @Amount, CurrencyName = @CurrencyName WHERE Id = @Id", con);
                             cmd.CommandType = CommandType.Text;
                             cmd.Parameters.AddWithValue("@Id", CurrencyId);
@@ -252,13 +215,11 @@ namespace CurrencyConverter_Static
                             MessageBox.Show("Data updated successfully", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
                         }
                     }
-                    // Code to Save
                     else
                     {
                         if (MessageBox.Show("Are you sure you want to save ?", "Information", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                         {
                             mycon();
-                            //Insert query to Save data in the table
                             cmd = new SqlCommand("INSERT INTO Currency_Master(Amount, CurrencyName) VALUES(@Amount, @CurrencyName)", con);
                             cmd.CommandType = CommandType.Text;
                             cmd.Parameters.AddWithValue("@Amount", txtAmount.Text);
@@ -298,33 +259,23 @@ namespace CurrencyConverter_Static
 
         private void GetData()
         {
-            //Method is used for connect with database and open database connection
             mycon();
 
-            //Create Datatable object
             DataTable dt = new DataTable();
 
-            //Write SQL query to get the data from database table. Query written in double quotes and after comma provide connection.
             cmd = new SqlCommand("SELECT * FROM Currency_Master", con);
 
-            //CommandType define which type of command will execute like Text, StoredProcedure, TableDirect.
             cmd.CommandType = CommandType.Text;
 
-            //It is accept a parameter that contains the command text of the object's SelectCommand property.
             da = new SqlDataAdapter(cmd);
 
-            //The DataAdapter serves as a bridge between a DataSet and a data source for retrieving and saving data. 
-            //The fill operation then adds the rows to destination DataTable objects in the DataSet
             da.Fill(dt);
 
-            //dt is not null and rows count greater than 0
             if (dt != null && dt.Rows.Count > 0)
-                //Assign DataTable data to dgvCurrency using item source property.
                 dgvCurrency.ItemsSource = dt.DefaultView;
             else
                 dgvCurrency.ItemsSource = null;
 
-            //Database connection close
             con.Close();
         }
 
@@ -345,48 +296,36 @@ namespace CurrencyConverter_Static
         {
             try
             {
-                //Create object for DataGrid
                 DataGrid grd = (DataGrid)sender;
 
-                //Create an object for DataRowView
                 DataRowView row_selected = grd.CurrentItem as DataRowView;
 
-                //If row_selected is not null
                 if (row_selected != null)
                 {
-                    //dgvCurrency items count greater than zero
                     if (dgvCurrency.Items.Count > 0)
                     {
                         if (grd.SelectedCells.Count > 0)
                         {
-                            //Get selected row id column value and set it to the CurrencyId variable
                             CurrencyId = Int32.Parse(row_selected["Id"].ToString());
 
-                            //DisplayIndex is equal to zero in the Edited cell
                             if (grd.SelectedCells[0].Column.DisplayIndex == 0)
                             {
-                                //Get selected row amount column value and set to amount textbox
                                 txtAmount.Text = row_selected["Amount"].ToString();
 
-                                //Get selected row CurrencyName column value and set it to CurrencyName textbox
                                 txtCurrencyName.Text = row_selected["CurrencyName"].ToString();
-                                btnSave.Content = "Update";     //Change save button text Save to Update
+                                btnSave.Content = "Update";
                             }
 
-                            //DisplayIndex is equal to one in the deleted cell
                             if (grd.SelectedCells[0].Column.DisplayIndex == 1)
                             {
-                                //Show confirmation dialog box
                                 if (MessageBox.Show("Are you sure you want to delete ?", "Information", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                                 {
                                     mycon();
                                     DataTable dt = new DataTable();
 
-                                    //Execute delete query to delete record from table using Id
                                     cmd = new SqlCommand("DELETE FROM Currency_Master WHERE Id = @Id", con);
                                     cmd.CommandType = CommandType.Text;
 
-                                    //CurrencyId set in @Id parameter and send it in delete statement
                                     cmd.Parameters.AddWithValue("@Id", CurrencyId);
                                     cmd.ExecuteNonQuery();
                                     con.Close();
