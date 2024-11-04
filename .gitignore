@@ -8,5 +8,6 @@
 # Build results
 [Bb]in/
 [Oo]bj/
+Images/
 DataBase/CurencyConverter.mdf
 DataBase/CurencyConverter_log.ldf
